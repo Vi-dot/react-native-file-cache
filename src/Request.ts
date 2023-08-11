@@ -51,8 +51,8 @@ class Request extends EventEmitter {
     return this.file
   }
   
-  private onProgress = (loaded: number, total: number) => {
-    this.emit('progress', loaded, total)
+  private onProgress = (received: string, total: string) => {
+    this.emit('progress', received, total)
   }
   private onLoad = (response: Parameters<Required<RequestListeners>['onLoad']>[0]) => {
     const file = new FileResponse(response).getFile()

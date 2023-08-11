@@ -1,12 +1,12 @@
 import { PermissionsAndroid, Platform } from 'react-native'
-import RNFetchBlob, { RNFetchBlobStat } from 'rn-fetch-blob'
+import ReactNativeBlobUtil, { ReactNativeBlobUtilStat } from 'react-native-blob-util'
 import PQueue from 'p-queue'
 import Path from '@mutagen-d/path'
 import FilePath from './FilePath'
 import Logger from './Logger'
 
 class FileSystem {
-  private static files: RNFetchBlobStat[] = []
+  private static files: ReactNativeBlobUtilStat[] = []
   private static queue: PQueue = new PQueue({ concurrency: 1 })
 
   static async loadFiles(...dirs: string[]) {
@@ -41,7 +41,7 @@ class FileSystem {
   }
   
   private static async readDirAndSaveFiles(path: string) {
-    const items = await RNFetchBlob.fs.lstat(path)
+    const items = await ReactNativeBlobUtil.fs.lstat(path)
     const files = items.filter(item => item.type == 'file' && !FileSystem.findFile(item.path))
     files.length && FileSystem.files.push(...files)
     FileSystem.files.sort((a, b) => a.lastModified - b.lastModified)
@@ -58,7 +58,7 @@ class FileSystem {
       const resolvedPath = Path.resolve(path)
       FilePath.emitTo(resolvedPath, 'remove-started')
       const res = await FileSystem.queue.add(() => {
-        return RNFetchBlob.fs.unlink(resolvedPath)
+        return ReactNativeBlobUtil.fs.unlink(resolvedPath)
       })
       FilePath.emitTo(resolvedPath, 'remove-done')
       FilePath.cleanFile(resolvedPath)
@@ -70,11 +70,11 @@ class FileSystem {
   }
 
   static async createDirIfNotExists(dir: string) {
-    const exists = await RNFetchBlob.fs.exists(dir)
+    const exists = await ReactNativeBlobUtil.fs.exists(dir)
     if (exists) {
       return false
     }
-    await RNFetchBlob.fs.mkdir(dir)
+    await ReactNativeBlobUtil.fs.mkdir(dir)
     return true
   }
   

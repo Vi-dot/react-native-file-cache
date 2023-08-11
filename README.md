@@ -6,7 +6,7 @@ Caching files to disk in react-native apps
 
 ## Installation
 
-This package depends on [`rn-fetch-blob`](https://github.com/joltup/rn-fetch-blob). First [install](https://github.com/joltup/rn-fetch-blob#user-content-installation) it.
+This package depends on [`react-native-blob-util`](https://github.com/RonRadtke/react-native-blob-util). First [install](https://github.com/RonRadtke/react-native-blob-util#user-content-installation) it.
 
 ```bash
 npm i @mutagen-d/react-native-file-cache

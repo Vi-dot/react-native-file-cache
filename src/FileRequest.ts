@@ -1,4 +1,4 @@
-import RNFetchBlob, { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
+import ReactNativeBlobUtil, { FetchBlobResponse, StatefulPromise } from 'react-native-blob-util';
 import FileSystem from './FileSystem';
 import Logger from './Logger';
 import Path from '@mutagen-d/path'
@@ -18,7 +18,7 @@ export type RequestMethod<T extends Method = Method> = Uppercase<T> | Lowercase<
 export type Method = 'GET' | 'POST' | 'PUT' | 'HEAD'
 
 export type RequestListeners = {
-  onProgress?: (loaded: number, total: number) => void
+  onProgress?: (received: string, total: string) => void
   onLoad?: (response: { url: string; path?: string; responseHeaders: Record<string, string> }) => void
   onError?: (reason?: any) => void
   onLoadEnd?: () => void
@@ -52,7 +52,7 @@ class FileRequest {
   private async fetchFile() {
     const { url, path, method = 'GET', headers, body } = this.options
 
-    const { fetch } = path ? RNFetchBlob.config({ path }) : RNFetchBlob
+    const { fetch } = path ? ReactNativeBlobUtil.config({ path }) : ReactNativeBlobUtil
     const req = this.req = fetch(method, url, headers, body)
     if (this.options.onProgress) {
       req.progress(this.options.onProgress)
@@ -84,7 +84,7 @@ class FileRequest {
     })
     const file = fres.getFile()
     const fixedPath = `${path}.${file.ext}`
-    await RNFetchBlob.fs.mv(path, fixedPath)
+    await ReactNativeBlobUtil.fs.mv(path, fixedPath)
     return fixedPath
   }
   private unlinkFile() {
@@ -113,7 +113,9 @@ class FileRequest {
     try {
       await this.cancelRequest()
     } catch (e) {
+      if (e instanceof Error) {
       this.logError(new Error('cancel error: ' + e.message))
+      }
     } finally {
       this.unlinkFile()
     }
