@@ -64,7 +64,7 @@ class FileRecord {
   }
   static create(path: string, params?: Omit<FileRecordParams, 'name' | 'ext' | 'dir'>) {
     if (!Path.isSubPath(path, BaseDir.getBaseDIR())) {
-      throw new Error('invalid file path, path must be within baseDir "' + BaseDir.getBaseDIR() + '"')
+      throw new Error('invalid file path, path must be within baseDir:"' + BaseDir.getBaseDIR() + '" path:"'+path+'"')
     }
     const relativePath = Path.getRelativePath(path, BaseDir.getBaseDIR())
     const names = Path.getNames(relativePath)
