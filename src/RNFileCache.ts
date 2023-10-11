@@ -146,9 +146,9 @@ class RNFileCache {
   }
   
   static async download(options: Omit<FileRequestOptions, 'path'> & { dirName?: string }) {
-    // if (!FileStorage.isReady()) {
-    //   throw new Error('FileStorage [error]: is not ready')
-    // }
+    if (!FileStorage.isReady()) {
+      throw new Error('FileStorage [error]: is not ready')
+    }
     await FileSystem.requestPermissions()
     const path = RNFileCache.getPath(options.url, options.dirName)
     const file = await Downloader.download({ ...options, path })
