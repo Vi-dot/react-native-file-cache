@@ -10,7 +10,9 @@ const _1MiB = 1024 * 1024
 
 class FileStorage {
   static get baseDir() { return BaseDir.getBaseDIR() }
-  static set baseDir(baseDir) {}
+  static set baseDir(baseDir) {
+    BaseDir.setBaseDIR(baseDir)
+  }
   static maxSize: number = 512 * _1MiB
   private static defaultDir = 'rn-file-cache' as const
   

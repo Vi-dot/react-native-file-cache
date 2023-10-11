@@ -15,6 +15,14 @@ class RNFileCache {
   private static prefix: string = Platform.OS == 'ios' ? '' : 'file://'
   private static clearingRatio: number = 0.15
   private static cleaning: boolean = false
+
+  static setBaseDir(path: string) {
+    FileStorage.baseDir = path;
+  }
+  
+  static getBaseDir(): string {
+    return FileStorage.baseDir;
+  }
   
   static setPrefix(prefix: string) {
     RNFileCache.prefix = prefix
